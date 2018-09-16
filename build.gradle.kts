@@ -9,7 +9,7 @@ application {
 
 dependencies {
     compile(kotlin("stdlib"))
-    compile("com.github.FalseHonesty:kotlin-parser:14a9085fca")
+    compile("com.github.FalseHonesty:kotlin-parser:07cf24f257")
     compile("org.eclipse.jgit:org.eclipse.jgit:2.2.0.201212191850-r")
 }
 

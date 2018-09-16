@@ -14,12 +14,14 @@ fun main(args: Array<String>) {
     val compiler = StringBuilder()
     files.deleteRecursively()
 
-    val git = Git.cloneRepository()
+    Git.cloneRepository()
             .setURI("https://github.com/ChatTriggers/ct.js.git")
             .setBranchesToClone(listOf("refs/heads/feature/kotlin"))
             .setBranch("refs/heads/feature/kotlin")
             .setDirectory(files)
             .call()
+
+    compiler.append("@file:Suppress(\"UNUSED\")\n\n")
 
     File(files, "src/main/kotlin").walk().filter {
         it.name.endsWith(".kt")
@@ -33,6 +35,7 @@ fun main(args: Array<String>) {
 }
 
 fun parseFile(toParse: File, compiler: StringBuilder) {
+    println("Parsing file ${toParse.name}")
     var text = toParse.readText()
 
     text = text.replace("0.0", "0")

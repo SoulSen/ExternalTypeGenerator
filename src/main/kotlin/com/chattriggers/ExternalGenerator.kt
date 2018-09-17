@@ -311,8 +311,6 @@ class ExternalGenerator : KotlinParserBaseListener() {
         classBuilder.append("$entries;\n")
     }
 
-    private fun fixType(type: String) = if (BLOCKED_TYPES.contains(type.replace("?", ""))) "dynamic" else type
-
     private fun isExternal(modList: KotlinParser.ModifierListContext?): Boolean {
         return modList?.annotations()?.any {
             it?.annotation()?.LabelReference()?.symbol?.text == "@External"

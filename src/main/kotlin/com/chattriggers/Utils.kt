@@ -12,6 +12,27 @@ operator fun String.times(num: Int): String {
     return sb.toString()
 }
 
+internal fun isBlocked(type: String): Boolean {
+    val fixedType = type.replace("?", "")
+
+    return BLOCKED_TYPES.contains(fixedType) || BLOCKED_TYPES.any {
+        type.contains("<$it>")
+    }
+}
+
+internal fun fixType(type: String): String {
+    if (!isBlocked(type)) return type
+
+    if (type.contains("<")) {
+        return type.replace(
+                BLOCKED_TYPES.first { type.contains(it) },
+                "dynamic"
+        )
+    }
+
+    return "dynamic"
+}
+
 internal val BLOCKED_TYPES = setOf(
         "ScriptObjectMirror", "ClientChatReceivedEvent", "MouseEvent",
         "RenderGameOverlayEvent", "IChatComponent", "PlaySoundEvent",
@@ -25,5 +46,6 @@ internal val BLOCKED_TYPES = setOf(
         "EntityPlayerSP", "Score", "WorldClient", "TriggerType",
         "net.minecraft.scoreboard.Score", "IBlockState",
         "MCBlock", "BlockPos", "GuiButton",
-        "RenderGameOverlayEvent.ElementType", "Minecraft"
+        "RenderGameOverlayEvent.ElementType", "Minecraft",
+        "UUID", "Vector2f"
 )

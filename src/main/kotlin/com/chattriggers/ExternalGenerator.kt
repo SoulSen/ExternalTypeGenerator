@@ -10,6 +10,7 @@ class ExternalGenerator : KotlinParserBaseListener() {
     private var ignoreFuns = false
     private var hasDynCtor = false
     private var hasNoSupers = false
+    private var currentClassName = "Unit"
 
     //TODO: PROPERTIES
 
@@ -25,6 +26,8 @@ class ExternalGenerator : KotlinParserBaseListener() {
             isInExternal = false
             return
         }
+
+        currentClassName = ctx.simpleIdentifier().Identifier().toString()
 
         isInExternal = true
 
@@ -49,6 +52,8 @@ class ExternalGenerator : KotlinParserBaseListener() {
             isInExternal = false
             return
         }
+
+        currentClassName = ctx.simpleIdentifier().Identifier().toString()
 
         isInExternal = true
 
@@ -136,6 +141,7 @@ class ExternalGenerator : KotlinParserBaseListener() {
         val isOverride = mods?.modifier()?.any {
             it?.memberModifier()?.OVERRIDE() != null
         } ?: false
+        val isApply = ctx.functionBody()?.expression()?.text?.startsWith("apply") ?: false
         val isStringLiteral = ctx.functionBody()?.expression()?.text?.startsWith("\"") ?: false
         val isToString = name.text.contains("toString")
 
@@ -152,6 +158,8 @@ class ExternalGenerator : KotlinParserBaseListener() {
         if (!isUnit) {
             val fixedType = fixType(ctx.type()[0].text)
             classBuilder.append(": $fixedType")
+        } else if (isApply) {
+            classBuilder.append(": $currentClassName")
         } else if (isStringLiteral || isToString) {
             classBuilder.append(": String")
         }
@@ -228,7 +236,9 @@ class ExternalGenerator : KotlinParserBaseListener() {
             return
         }
 
-         isInInner = true
+        currentClassName = ctx.simpleIdentifier().Identifier().toString()
+
+        isInInner = true
 
         classBuilder.append(TAB)
         classBuilder.append("object ${ctx.simpleIdentifier().Identifier()} {\n")
@@ -243,6 +253,8 @@ class ExternalGenerator : KotlinParserBaseListener() {
             ignoreFuns = true
             return
         }
+
+        currentClassName = ctx.simpleIdentifier().Identifier().toString()
 
         isInInner = true
 
@@ -319,6 +331,7 @@ class ExternalGenerator : KotlinParserBaseListener() {
             classBuilder.append("}\n")
         }
 
+        currentClassName = "Unit"
     }
 
     private fun getSupers(ctx: KotlinParser.DelegationSpecifiersContext): String {

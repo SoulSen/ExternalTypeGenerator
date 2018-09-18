@@ -65,7 +65,7 @@ class ExternalGenerator : KotlinParserBaseListener() {
             it?.inheritanceModifier()?.OPEN() != null
         } ?: false
 
-        if (isAbstract) classBuilder.append("abstract ")
+        if (isAbstract && !isNotAbstract(ctx.modifierList())) classBuilder.append("abstract ")
         if (isOpen) classBuilder.append("open ")
 
         classBuilder.append("external class ${ctx.simpleIdentifier().Identifier()}")
@@ -130,7 +130,7 @@ class ExternalGenerator : KotlinParserBaseListener() {
             it?.inheritanceModifier()?.OPEN() != null
         } ?: false
 
-        val name = ctx.identifier()?.simpleIdentifier()?.get(0)?.Identifier() ?: return
+        val name = ctx.identifier()?.simpleIdentifier()?.get(0)?.text ?: return
 
         if (isPrivate) return
 
@@ -143,7 +143,7 @@ class ExternalGenerator : KotlinParserBaseListener() {
         } ?: false
         val isApply = ctx.functionBody()?.expression()?.text?.startsWith("apply") ?: false
         val isStringLiteral = ctx.functionBody()?.expression()?.text?.startsWith("\"") ?: false
-        val isToString = name.text.contains("toString")
+        val isToString = name.contains("toString")
 
         classBuilder.append(TAB)
 
@@ -314,6 +314,12 @@ class ExternalGenerator : KotlinParserBaseListener() {
     private fun isExternal(modList: KotlinParser.ModifierListContext?): Boolean {
         return modList?.annotations()?.any {
             it?.annotation()?.LabelReference()?.symbol?.text == "@External"
+        } ?: false
+    }
+
+    private fun isNotAbstract(modList: KotlinParser.ModifierListContext?): Boolean {
+        return modList?.annotations()?.any {
+            it?.annotation()?.LabelReference()?.symbol?.text == "@NotAbstract"
         } ?: false
     }
 

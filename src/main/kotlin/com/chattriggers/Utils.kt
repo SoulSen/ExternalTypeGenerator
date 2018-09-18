@@ -47,5 +47,5 @@ internal val BLOCKED_TYPES = setOf(
         "net.minecraft.scoreboard.Score", "IBlockState",
         "MCBlock", "BlockPos", "GuiButton",
         "RenderGameOverlayEvent.ElementType", "Minecraft",
-        "UUID", "Vector2f"
+        "UUID", "Vector2f", "NBTBase", "NBTTagCompound"
 )

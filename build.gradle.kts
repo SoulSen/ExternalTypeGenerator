@@ -30,4 +30,3 @@ task("createGlue", JavaExec::class) {
         main = "com.chattriggers.GeneratorKt"
         classpath = java.sourceSets["main"].runtimeClasspath
     }
-}

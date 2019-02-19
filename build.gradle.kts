@@ -18,3 +18,7 @@ repositories {
     mavenCentral()
     maven(url = "https://jitpack.io")
 }
+
+task("createGlue") {
+    application
+}

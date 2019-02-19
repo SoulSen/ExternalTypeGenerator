@@ -19,6 +19,15 @@ repositories {
     maven(url = "https://jitpack.io")
 }
 
-task("createGlue") {
-    application
+java.sourceSets["main"].withConvention(KotlinSourceSet::class) {
+    kotlin.srcDir(file("src/main/kotlin"))
+}
+
+task("createGlue", JavaExec::class) {
+    group = "ChatTriggers"
+    description = "Create Glue for CTKotlinWorkspace"
+    run {
+        main = "com.chattriggers.GeneratorKt"
+        classpath = java.sourceSets["main"].runtimeClasspath
+    }
 }

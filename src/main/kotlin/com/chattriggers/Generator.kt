@@ -16,8 +16,8 @@ fun main(args: Array<String>) {
 
     Git.cloneRepository()
             .setURI("https://github.com/ChatTriggers/ct.js.git")
-            .setBranchesToClone(listOf("refs/heads/master"))
-            .setBranch("refs/heads/master")
+            .setBranchesToClone(listOf("refs/heads/feature/kotlin"))
+            .setBranch("refs/heads/feature/kotlin")
             .setDirectory(files)
             .call()
 

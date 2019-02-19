@@ -6,7 +6,6 @@ import com.github.sarahbuisson.kotlinparser.KotlinParser
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.api.ListBranchCommand
 import java.io.File
 
 fun main(args: Array<String>) {
